@@ -475,6 +475,159 @@
   color: var(--cyan);
 }
 
+/* ── BIO STEP ── */
+.bioStep {
+  border-top: 1px solid rgba(0,255,255,0.1);
+  padding-top: 2rem;
+}
+
+.bioStepHeader {
+  margin-bottom: 1.5rem;
+}
+
+.bioStepEyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--cyan);
+  opacity: 0.6;
+  margin-bottom: 0.5rem;
+}
+
+.bioStepCopy {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.bioStepForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.bioStepRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.bioStepField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.bioStepLabel {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+}
+
+.bioStepInput {
+  background: rgba(0,255,255,0.02);
+  border: 1px solid rgba(0,255,255,0.12);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  padding: 0.7rem 0.9rem;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.25s ease;
+}
+
+.bioStepInput::placeholder {
+  color: rgba(255,255,255,0.15);
+}
+
+.bioStepInput:focus {
+  border-color: rgba(0,255,255,0.4);
+}
+
+.bioStepTextarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.6;
+}
+
+.bioStepError {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: #ff6666;
+  padding: 0.6rem 0.8rem;
+  background: rgba(255,50,50,0.07);
+  border: 1px solid rgba(255,50,50,0.2);
+}
+
+.bioStepActions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.bioStepBtn {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #000;
+  background: var(--cyan);
+  border: none;
+  padding: 0.8rem 1.4rem;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  box-shadow: 0 0 16px rgba(0,255,255,0.3);
+  transition: box-shadow 0.25s ease, transform 0.2s ease;
+}
+
+.bioStepBtn:hover:not(:disabled) {
+  box-shadow: 0 0 24px rgba(0,255,255,0.6);
+  transform: translateY(-1px);
+}
+
+.bioStepBtn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.bioSkipBtn {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem;
+  transition: color 0.2s ease;
+}
+
+.bioSkipBtn:hover {
+  color: var(--text);
+}
+
+.bioConfirm {
+  border-top: 1px solid rgba(0,255,255,0.1);
+  padding-top: 1.5rem;
+}
+
+.bioConfirmEyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--cyan);
+  margin-bottom: 0.5rem;
+}
+
+.bioConfirm p {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+
 @media (max-width: 900px) {
   .formLayout {
     grid-template-columns: 1fr;

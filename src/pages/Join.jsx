@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import styles from './Join.module.css'
 import { submitToSheet } from '../lib/submitToSheet'
+import { submitBio } from '../lib/submitBio'
 
 const INTEREST_OPTIONS = [
   'Email / Inbox automation',
@@ -58,9 +59,11 @@ Just write the message directly, no subject line or extra formatting.`
 
 export default function Join() {
   const [form, setForm] = useState({ name: '', email: '', background: '', reason: '', interests: [] })
-  const [status, setStatus] = useState('idle') // idle | loading | success | error
+  const [status, setStatus] = useState('idle') // idle | loading | welcome | bioSubmitting | done | error
   const [welcome, setWelcome] = useState('')
   const [error, setError] = useState('')
+  const [bioForm, setBioForm] = useState({ role: '', bio: '' })
+  const [bioError, setBioError] = useState('')
 
   const toggleInterest = (val) => {
     setForm(f => ({
@@ -82,14 +85,27 @@ export default function Join() {
         submitToSheet(form),
       ])
       setWelcome(msg)
-      setStatus('success')
+      setStatus('welcome')
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.')
       setStatus('error')
     }
   }
 
-  if (status === 'success') {
+  const handleBioSubmit = async (e) => {
+    e.preventDefault()
+    setBioError('')
+    setStatus('bioSubmitting')
+    try {
+      await submitBio({ name: form.name, role: bioForm.role, bio: bioForm.bio })
+      setStatus('done')
+    } catch (err) {
+      setBioError(err.message || 'Bio submission failed. Please try again.')
+      setStatus('welcome')
+    }
+  }
+
+  if (status === 'welcome' || status === 'bioSubmitting' || status === 'done') {
     return (
       <div className={styles.page}>
         <div className={styles.bg}>
@@ -122,6 +138,65 @@ export default function Join() {
               </div>
             </div>
 
+            {status === 'done' ? (
+              <div className={styles.bioConfirm}>
+                <span className={styles.bioConfirmEyebrow}>◈ BIO SUBMITTED</span>
+                <p>You'll appear on the members page after approval.</p>
+              </div>
+            ) : (
+              <div className={styles.bioStep}>
+                <div className={styles.bioStepHeader}>
+                  <span className={styles.bioStepEyebrow}>OPTIONAL — ADD YOUR MEMBER BIO</span>
+                  <p className={styles.bioStepCopy}>Show up on the members page. Tell the club what you're building.</p>
+                </div>
+                <form onSubmit={handleBioSubmit} className={styles.bioStepForm}>
+                  <div className={styles.bioStepRow}>
+                    <div className={styles.bioStepField}>
+                      <label className={styles.bioStepLabel}>YOUR ROLE *</label>
+                      <input
+                        className={styles.bioStepInput}
+                        type="text"
+                        placeholder="Developer, Founder, etc."
+                        value={bioForm.role}
+                        onChange={e => setBioForm(f => ({ ...f, role: e.target.value }))}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.bioStepField}>
+                    <label className={styles.bioStepLabel}>YOUR BIO *</label>
+                    <textarea
+                      className={`${styles.bioStepInput} ${styles.bioStepTextarea}`}
+                      placeholder="2-3 sentences — who you are and what you're building."
+                      value={bioForm.bio}
+                      onChange={e => setBioForm(f => ({ ...f, bio: e.target.value }))}
+                      rows={3}
+                      required
+                    />
+                  </div>
+                  {bioError && (
+                    <div className={styles.bioStepError}>⚠ {bioError}</div>
+                  )}
+                  <div className={styles.bioStepActions}>
+                    <button
+                      type="submit"
+                      disabled={status === 'bioSubmitting'}
+                      className={styles.bioStepBtn}
+                    >
+                      {status === 'bioSubmitting' ? 'SUBMITTING...' : 'ADD MY BIO →'}
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.bioSkipBtn}
+                      onClick={() => setStatus('done')}
+                    >
+                      SKIP FOR NOW
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
+
             <div className={styles.successActions}>
               <a
                 href="https://meetup.com"
@@ -133,7 +208,7 @@ export default function Join() {
               </a>
               <button
                 className={styles.successSecondary}
-                onClick={() => { setStatus('idle'); setForm({ name: '', email: '', background: '', reason: '', interests: [] }) }}
+                onClick={() => { setStatus('idle'); setForm({ name: '', email: '', background: '', reason: '', interests: [] }); setBioForm({ role: '', bio: '' }) }}
               >
                 REGISTER ANOTHER MEMBER
               </button>
