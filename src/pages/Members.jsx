@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './Members.module.css'
+import { submitBio } from '../lib/submitBio'
+import { fetchMembers } from '../lib/fetchMembers'
 
 const FEATURED_MEMBERS = [
   {
@@ -102,11 +104,18 @@ Just write the 3 sentences. No introduction, no formatting.`
   return data.content[0].text
 }
 
+const MEMBERS_THRESHOLD = 5
+
 export default function Members() {
   const [form, setForm] = useState({ name: '', role: '', about: '' })
-  const [status, setStatus] = useState('idle') // idle | loading | done | error
+  const [status, setStatus] = useState('idle') // idle | loading | done | submitting | submitted | error
   const [generatedBio, setGeneratedBio] = useState('')
   const [error, setError] = useState('')
+  const [realMembers, setRealMembers] = useState([])
+
+  useEffect(() => {
+    fetchMembers().then(setRealMembers).catch(() => {})
+  }, [])
 
   const handleGenerate = async (e) => {
     e.preventDefault()
@@ -131,6 +140,20 @@ export default function Members() {
   }
 
   const colorOrder = ['cyan', 'magenta', 'green']
+  const displayMembers = realMembers.length >= MEMBERS_THRESHOLD
+    ? realMembers
+    : [...realMembers, ...FEATURED_MEMBERS]
+
+  const handleSubmitBio = async () => {
+    setStatus('submitting')
+    try {
+      await submitBio({ name: form.name, role: form.role, bio: generatedBio })
+      setStatus('submitted')
+    } catch (err) {
+      setError(err.message || 'Submission failed. Please try again.')
+      setStatus('done')
+    }
+  }
 
   return (
     <div className={styles.page}>
@@ -157,7 +180,7 @@ export default function Members() {
       <section className={styles.membersSection}>
         <div className="section-wrapper">
           <div className={styles.membersGrid}>
-            {FEATURED_MEMBERS.map((m, i) => (
+            {displayMembers.map((m, i) => (
               <div key={m.name} className={`${styles.memberCard} ${styles[`card_${m.color}`]}`}>
                 <div className={styles.memberTop}>
                   <div className={`${styles.memberAvatar} ${styles[`avatar_${m.color}`]}`}>
@@ -215,7 +238,18 @@ export default function Members() {
             </div>
 
             <div className={styles.bioRight}>
-              {status === 'done' ? (
+              {status === 'submitted' ? (
+                <div className={styles.bioResult}>
+                  <div className={styles.bioResultHeader}>
+                    <span className={styles.bioResultEyebrow}>BIO SUBMITTED</span>
+                    <h3 className={styles.bioResultName}>{form.name}</h3>
+                    <p className={styles.bioResultRole}>Pending approval — you'll appear on this page soon.</p>
+                  </div>
+                  <button className={styles.regenBtn} onClick={reset}>
+                    SUBMIT ANOTHER ↺
+                  </button>
+                </div>
+              ) : (status === 'done' || status === 'submitting') ? (
                 <div className={styles.bioResult}>
                   <div className={styles.bioResultHeader}>
                     <span className={styles.bioResultEyebrow}>GENERATED BIO</span>
@@ -228,12 +262,25 @@ export default function Members() {
                     <p>{generatedBio}</p>
                   </div>
 
+                  {error && (
+                    <div className={styles.errorBox}>
+                      <span>⚠ {error}</span>
+                    </div>
+                  )}
+
                   <div className={styles.bioResultActions}>
                     <button
                       className={styles.copyBtn}
                       onClick={() => navigator.clipboard.writeText(generatedBio)}
                     >
                       COPY BIO
+                    </button>
+                    <button
+                      className={styles.generateBtn}
+                      onClick={handleSubmitBio}
+                      disabled={status === 'submitting'}
+                    >
+                      {status === 'submitting' ? 'SUBMITTING...' : 'SUBMIT MY BIO →'}
                     </button>
                     <button className={styles.regenBtn} onClick={reset}>
                       REGENERATE ↺
