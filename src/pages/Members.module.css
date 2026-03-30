@@ -249,11 +249,9 @@
   border-top: 1px solid rgba(255,255,255,0.04);
 }
 
-.bioLayout {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 5rem;
-  align-items: start;
+.bioHeader {
+  text-align: center;
+  margin-bottom: 2.5rem;
 }
 
 .sectionEyebrow {
@@ -311,6 +309,8 @@
   padding: 2.5rem;
   background: var(--bg-card);
   border: 1px solid rgba(0,255,255,0.12);
+  max-width: 680px;
+  margin: 0 auto;
 }
 
 .formRow {
@@ -421,6 +421,8 @@
   flex-direction: column;
   gap: 1.5rem;
   animation: fadeIn 0.5s ease;
+  max-width: 680px;
+  margin: 0 auto;
 }
 
 @keyframes fadeIn {
@@ -532,10 +534,6 @@
 @media (max-width: 768px) {
   .membersGrid {
     grid-template-columns: 1fr;
-  }
-  .bioLayout {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
   }
   .formRow {
     grid-template-columns: 1fr;

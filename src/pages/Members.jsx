@@ -152,103 +152,91 @@ export default function Members() {
       {/* ── BIO FORM ── */}
       <section className={styles.bioSection}>
         <div className="section-wrapper">
-          <div className={styles.bioLayout}>
-            <div className={styles.bioLeft}>
-              <span className={styles.sectionEyebrow}>JOIN THE ROSTER</span>
-              <h2 className={styles.sectionTitle}>
-                ADD YOUR<br />
-                <span className="neon-cyan">MEMBER BIO</span>
-              </h2>
-              <p className={styles.bioCopy}>
-                Attended a session? Submit your bio and get added to the members page.
-                Keep it short and tell us what you're building.
-              </p>
-              <div className={styles.bioHint}>
-                <span className={styles.hintIcon}>◈</span>
-                <span>
-                  Your bio will appear on this page after approval.
-                </span>
-              </div>
-            </div>
-
-            <div className={styles.bioRight}>
-              {status === 'submitted' ? (
-                <div className={styles.bioResult}>
-                  <div className={styles.bioResultHeader}>
-                    <span className={styles.bioResultEyebrow}>BIO SUBMITTED</span>
-                    <h3 className={styles.bioResultName}>{form.name}</h3>
-                    <p className={styles.bioResultRole}>Pending approval — you'll appear on this page soon.</p>
-                  </div>
-                  <button className={styles.regenBtn} onClick={reset}>
-                    SUBMIT ANOTHER ↺
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className={styles.bioForm}>
-                  <div className={styles.formRow}>
-                    <div className={styles.formField}>
-                      <label className={styles.label}>YOUR NAME *</label>
-                      <input
-                        className={styles.input}
-                        type="text"
-                        placeholder="First name or full name"
-                        value={form.name}
-                        onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                        required
-                      />
-                    </div>
-                    <div className={styles.formField}>
-                      <label className={styles.label}>YOUR ROLE *</label>
-                      <input
-                        className={styles.input}
-                        type="text"
-                        placeholder="Developer, Founder, etc."
-                        value={form.role}
-                        onChange={e => setForm(f => ({ ...f, role: e.target.value }))}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div className={styles.formField}>
-                    <label className={styles.label}>YOUR BIO *</label>
-                    <textarea
-                      className={`${styles.input} ${styles.textarea}`}
-                      placeholder="Tell the club who you are and what you're building. 2-3 sentences."
-                      value={form.bio}
-                      onChange={e => setForm(f => ({ ...f, bio: e.target.value }))}
-                      rows={4}
-                      required
-                    />
-                  </div>
-
-                  {error && (
-                    <div className={styles.errorBox}>
-                      <span>⚠ {error}</span>
-                    </div>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={status === 'submitting'}
-                    className={styles.generateBtn}
-                  >
-                    {status === 'submitting' ? (
-                      <>
-                        <span className={styles.spinner} />
-                        <span>SUBMITTING...</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>SUBMIT MY BIO</span>
-                        <span>→</span>
-                      </>
-                    )}
-                  </button>
-                </form>
-              )}
-            </div>
+          <div className={styles.bioHeader}>
+            <span className={styles.sectionEyebrow}>JOIN THE ROSTER</span>
+            <h2 className={styles.sectionTitle}>
+              ADD YOUR <span className="neon-cyan">MEMBER BIO</span>
+            </h2>
+            <p className={styles.bioCopy}>
+              Attended a session? Submit your bio and get added to the members page.
+            </p>
           </div>
+
+          {status === 'submitted' ? (
+            <div className={styles.bioResult}>
+              <div className={styles.bioResultHeader}>
+                <span className={styles.bioResultEyebrow}>BIO SUBMITTED</span>
+                <h3 className={styles.bioResultName}>{form.name}</h3>
+                <p className={styles.bioResultRole}>Pending approval — you'll appear on this page soon.</p>
+              </div>
+              <button className={styles.regenBtn} onClick={reset}>
+                SUBMIT ANOTHER ↺
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className={styles.bioForm}>
+              <div className={styles.formRow}>
+                <div className={styles.formField}>
+                  <label className={styles.label}>YOUR NAME *</label>
+                  <input
+                    className={styles.input}
+                    type="text"
+                    placeholder="First name or full name"
+                    value={form.name}
+                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                    required
+                  />
+                </div>
+                <div className={styles.formField}>
+                  <label className={styles.label}>YOUR ROLE *</label>
+                  <input
+                    className={styles.input}
+                    type="text"
+                    placeholder="Developer, Founder, etc."
+                    value={form.role}
+                    onChange={e => setForm(f => ({ ...f, role: e.target.value }))}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className={styles.formField}>
+                <label className={styles.label}>YOUR BIO *</label>
+                <textarea
+                  className={`${styles.input} ${styles.textarea}`}
+                  placeholder="Tell the club who you are and what you're building. 2-3 sentences."
+                  value={form.bio}
+                  onChange={e => setForm(f => ({ ...f, bio: e.target.value }))}
+                  rows={4}
+                  required
+                />
+              </div>
+
+              {error && (
+                <div className={styles.errorBox}>
+                  <span>⚠ {error}</span>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={status === 'submitting'}
+                className={styles.generateBtn}
+              >
+                {status === 'submitting' ? (
+                  <>
+                    <span className={styles.spinner} />
+                    <span>SUBMITTING...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>SUBMIT MY BIO</span>
+                    <span>→</span>
+                  </>
+                )}
+              </button>
+            </form>
+          )}
         </div>
       </section>
     </div>
