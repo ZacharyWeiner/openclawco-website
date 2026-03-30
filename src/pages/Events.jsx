@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import styles from './Events.module.css'
 import { Link } from 'react-router-dom'
+import { submitRsvp } from '../lib/submitRsvp'
 
 const UPCOMING_EVENTS = [
   {
@@ -78,6 +80,37 @@ const typeColors = {
 }
 
 export default function Events() {
+  const [rsvpEvent, setRsvpEvent] = useState(null)
+  const [rsvpForm, setRsvpForm] = useState({ name: '', email: '' })
+  const [rsvpStatus, setRsvpStatus] = useState('idle') // idle | loading | success | error
+  const [rsvpError, setRsvpError] = useState('')
+
+  const openRsvp = (ev) => {
+    setRsvpEvent(ev)
+    setRsvpForm({ name: '', email: '' })
+    setRsvpStatus('idle')
+    setRsvpError('')
+  }
+
+  const closeRsvp = () => {
+    setRsvpEvent(null)
+    setRsvpStatus('idle')
+  }
+
+  const handleRsvp = async (e) => {
+    e.preventDefault()
+    if (!rsvpForm.name || !rsvpForm.email) return
+    setRsvpStatus('loading')
+    setRsvpError('')
+    try {
+      await submitRsvp({ name: rsvpForm.name, email: rsvpForm.email, event: rsvpEvent.title })
+      setRsvpStatus('success')
+    } catch (err) {
+      setRsvpError(err.message || 'Something went wrong. Please try again.')
+      setRsvpStatus('error')
+    }
+  }
+
   return (
     <div className={styles.page}>
       <div className={styles.bg}>
@@ -148,9 +181,18 @@ export default function Events() {
                       ))}
                     </div>
 
-                    <Link to={ev.link || '/join'} className={`${styles.rsvpBtn} ${styles[`rsvp_${ev.color}`]}`}>
-                      {ev.link ? 'GET STARTED' : 'RSVP'} <span>→</span>
-                    </Link>
+                    {ev.link ? (
+                      <Link to={ev.link} className={`${styles.rsvpBtn} ${styles[`rsvp_${ev.color}`]}`}>
+                        GET STARTED <span>→</span>
+                      </Link>
+                    ) : (
+                      <button
+                        className={`${styles.rsvpBtn} ${styles[`rsvp_${ev.color}`]}`}
+                        onClick={() => openRsvp(ev)}
+                      >
+                        RSVP <span>→</span>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -229,6 +271,73 @@ export default function Events() {
           </div>
         </div>
       </section>
+
+      {/* ── RSVP MODAL ── */}
+      {rsvpEvent && (
+        <div className={styles.modalOverlay} onClick={closeRsvp}>
+          <div className={styles.modal} onClick={e => e.stopPropagation()}>
+            <button className={styles.modalClose} onClick={closeRsvp}>✕</button>
+
+            {rsvpStatus === 'success' ? (
+              <div className={styles.modalSuccess}>
+                <div className={styles.modalSuccessIcon}>◈</div>
+                <h3 className={styles.modalSuccessTitle}>YOU'RE IN</h3>
+                <p className={styles.modalSuccessEvent}>{rsvpEvent.title}</p>
+                <p className={styles.modalSuccessDate}>
+                  {rsvpEvent.date.month} {rsvpEvent.date.day}, {rsvpEvent.date.year} · {rsvpEvent.time}
+                </p>
+                <p className={styles.modalSuccessNote}>See you at {rsvpEvent.location}.</p>
+                <button className={styles.modalDoneBtn} onClick={closeRsvp}>DONE</button>
+              </div>
+            ) : (
+              <>
+                <span className={styles.modalEyebrow}>RSVP</span>
+                <h3 className={styles.modalTitle}>{rsvpEvent.title}</h3>
+                <p className={styles.modalDate}>
+                  {rsvpEvent.date.month} {rsvpEvent.date.day}, {rsvpEvent.date.year} · {rsvpEvent.time}
+                </p>
+
+                <form onSubmit={handleRsvp} className={styles.modalForm}>
+                  <div className={styles.modalField}>
+                    <label className={styles.modalLabel}>NAME *</label>
+                    <input
+                      className={styles.modalInput}
+                      type="text"
+                      placeholder="Your name"
+                      value={rsvpForm.name}
+                      onChange={e => setRsvpForm(f => ({ ...f, name: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div className={styles.modalField}>
+                    <label className={styles.modalLabel}>EMAIL *</label>
+                    <input
+                      className={styles.modalInput}
+                      type="email"
+                      placeholder="you@example.com"
+                      value={rsvpForm.email}
+                      onChange={e => setRsvpForm(f => ({ ...f, email: e.target.value }))}
+                      required
+                    />
+                  </div>
+
+                  {rsvpStatus === 'error' && (
+                    <div className={styles.modalError}>⚠ {rsvpError}</div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={rsvpStatus === 'loading'}
+                    className={styles.modalSubmit}
+                  >
+                    {rsvpStatus === 'loading' ? 'SUBMITTING...' : 'CONFIRM RSVP →'}
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

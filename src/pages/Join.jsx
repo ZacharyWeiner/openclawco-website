@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import styles from './Join.module.css'
 import { submitToSheet } from '../lib/submitToSheet'
 import { submitBio } from '../lib/submitBio'
@@ -135,14 +136,12 @@ export default function Join() {
             )}
 
             <div className={styles.successActions}>
-              <a
-                href="https://meetup.com"
-                target="_blank"
-                rel="noreferrer"
+              <Link
+                to="/events"
                 className={styles.successBtn}
               >
                 RSVP TO NEXT EVENT →
-              </a>
+              </Link>
               <button
                 className={styles.successSecondary}
                 onClick={() => { setStatus('idle'); setForm({ name: '', email: '', background: '', reason: '', interests: [] }); setBioForm({ role: '', bio: '' }) }}

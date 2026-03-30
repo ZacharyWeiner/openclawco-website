@@ -467,6 +467,207 @@
   line-height: 1.7;
 }
 
+/* ── RSVP MODAL ── */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  padding: 2.5rem;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: 0 0 60px rgba(0, 255, 255, 0.1);
+}
+
+.modalClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.modalClose:hover {
+  color: var(--text-bright);
+}
+
+.modalEyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: var(--cyan);
+  text-shadow: 0 0 6px rgba(0, 255, 255, 0.4);
+  margin-bottom: 0.8rem;
+}
+
+.modalTitle {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-bright);
+  margin-bottom: 0.4rem;
+}
+
+.modalDate {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  margin-bottom: 2rem;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.modalField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.modalLabel {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--text-dim);
+}
+
+.modalInput {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.7rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-bright);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.modalInput:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.15);
+}
+
+.modalInput::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.modalError {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: #ff6b6b;
+  padding: 0.7rem 1rem;
+  background: rgba(255, 107, 107, 0.08);
+  border: 1px solid rgba(255, 107, 107, 0.2);
+}
+
+.modalSubmit {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #000;
+  background: var(--cyan);
+  border: none;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.modalSubmit:hover {
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+  transform: translateY(-2px);
+}
+
+.modalSubmit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Modal success state */
+.modalSuccess {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.modalSuccessIcon {
+  font-size: 2rem;
+  color: var(--cyan);
+  text-shadow: 0 0 20px var(--cyan);
+  margin-bottom: 1rem;
+}
+
+.modalSuccessTitle {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--cyan);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+  margin-bottom: 0.8rem;
+}
+
+.modalSuccessEvent {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 0.4rem;
+}
+
+.modalSuccessDate {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.modalSuccessNote {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  margin-bottom: 1.5rem;
+}
+
+.modalDoneBtn {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--cyan);
+  background: none;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  padding: 0.6rem 1.5rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modalDoneBtn:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
 @media (max-width: 768px) {
   .eventMeta {
     grid-template-columns: 1fr;
