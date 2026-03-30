@@ -188,7 +188,6 @@ export default function Join() {
                 {[
                   ['◈', 'cyan', 'Free weekly sessions — forever'],
                   ['◈', 'magenta', 'Access to all club tools & templates'],
-                  ['◈', 'green', 'Session recordings library'],
                   ['◈', 'cyan', 'Discord community + async help'],
                   ['◈', 'magenta', 'Monthly deep-dive workshops'],
                   ['◈', 'green', 'Early access to new AI tools'],
