@@ -180,31 +180,39 @@ export default function Members() {
       <section className={styles.membersSection}>
         <div className="section-wrapper">
           <div className={styles.membersGrid}>
-            {displayMembers.map((m, i) => (
-              <div key={m.name} className={`${styles.memberCard} ${styles[`card_${m.color}`]}`}>
-                <div className={styles.memberTop}>
-                  <div className={`${styles.memberAvatar} ${styles[`avatar_${m.color}`]}`}>
-                    {m.initials}
+            {displayMembers.map((m, i) => {
+              const color = m.color || colorOrder[i % colorOrder.length]
+              const initials = m.initials || m.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
+              return (
+                <div key={m.name + i} className={`${styles.memberCard} ${styles[`card_${color}`]}`}>
+                  <div className={styles.memberTop}>
+                    <div className={`${styles.memberAvatar} ${styles[`avatar_${color}`]}`}>
+                      {initials}
+                    </div>
+                    <div className={styles.memberInfo}>
+                      <h3 className={styles.memberName}>{m.name}</h3>
+                      <p className={styles.memberRole}>{m.role}</p>
+                    </div>
+                    {m.sessions && (
+                      <div className={styles.memberSessions}>
+                        <span className={styles.sessionsNum}>{m.sessions}</span>
+                        <span className={styles.sessionsLabel}>SESSIONS</span>
+                      </div>
+                    )}
                   </div>
-                  <div className={styles.memberInfo}>
-                    <h3 className={styles.memberName}>{m.name}</h3>
-                    <p className={styles.memberRole}>{m.role}</p>
-                  </div>
-                  <div className={styles.memberSessions}>
-                    <span className={styles.sessionsNum}>{m.sessions}</span>
-                    <span className={styles.sessionsLabel}>SESSIONS</span>
-                  </div>
-                </div>
 
-                <p className={styles.memberBio}>{m.bio}</p>
+                  <p className={styles.memberBio}>{m.bio}</p>
 
-                <div className={styles.memberTags}>
-                  {m.tags.map(tag => (
-                    <span key={tag} className={`${styles.memberTag} ${styles[`tag_${m.color}`]}`}>{tag}</span>
-                  ))}
+                  {m.tags && m.tags.length > 0 && (
+                    <div className={styles.memberTags}>
+                      {m.tags.map(tag => (
+                        <span key={tag} className={`${styles.memberTag} ${styles[`tag_${color}`]}`}>{tag}</span>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
 
           <div className={styles.moreMembers}>
