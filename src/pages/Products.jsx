@@ -2,6 +2,19 @@ import styles from './Products.module.css'
 
 const TOOLS = [
   {
+    id: 0,
+    category: 'TOOL',
+    color: 'magenta',
+    icon: '⬡',
+    name: 'path402',
+    tagline: 'EVERY URL. BECOMES AN. ECONOMIC OBJECT.',
+    desc: 'Tokens gate access. Payment flows to holders and operators. The network rewards you for the infrastructure you provide.',
+    tags: ['Tokens', 'Access Control', 'Web3'],
+    status: 'AVAILABLE',
+    link: 'https://path402.com',
+    live: true,
+  },
+  {
     id: 1,
     category: 'WORKFLOW',
     color: 'cyan',
@@ -12,6 +25,7 @@ const TOOLS = [
     tags: ['Claude API', 'Email', 'Automation'],
     status: 'AVAILABLE',
     link: '#',
+    live: false,
   },
   {
     id: 2,
@@ -24,6 +38,7 @@ const TOOLS = [
     tags: ['AI Agents', 'Calendar', 'GPT-4'],
     status: 'BETA',
     link: '#',
+    live: false,
   },
   {
     id: 3,
@@ -36,6 +51,7 @@ const TOOLS = [
     tags: ['Claude API', 'Writing', 'Multi-format'],
     status: 'AVAILABLE',
     link: '#',
+    live: false,
   },
   {
     id: 4,
@@ -48,6 +64,7 @@ const TOOLS = [
     tags: ['No-Code', 'Agents', 'Open Source'],
     status: 'OPEN SOURCE',
     link: '#',
+    live: false,
   },
   {
     id: 5,
@@ -60,6 +77,7 @@ const TOOLS = [
     tags: ['RAG', 'Research', 'Claude'],
     status: 'AVAILABLE',
     link: '#',
+    live: false,
   },
   {
     id: 6,
@@ -72,6 +90,7 @@ const TOOLS = [
     tags: ['Prompts', 'Community', 'Free'],
     status: 'FREE',
     link: '#',
+    live: false,
   },
 ]
 
@@ -82,6 +101,7 @@ const RESOURCES = [
     title: 'AI Workflow Starter Pack',
     desc: '10 workflows you can implement today. No code required. Works with Claude or GPT.',
     link: '#',
+    live: false,
   },
   {
     type: 'VIDEO',
@@ -89,6 +109,7 @@ const RESOURCES = [
     title: 'Session Recordings',
     desc: 'Full recordings from past workshops. Watch over anyone\'s shoulder as they build.',
     link: '#',
+    live: false,
   },
   {
     type: 'TEMPLATE',
@@ -96,6 +117,7 @@ const RESOURCES = [
     title: 'Agent Architecture Templates',
     desc: 'Copy-paste templates for building multi-step AI workflows. Maintained by club devs.',
     link: '#',
+    live: false,
   },
   {
     type: 'TOOL',
@@ -103,6 +125,7 @@ const RESOURCES = [
     title: 'AI ROI Calculator',
     desc: 'How many hours per week could you automate? Enter your role. Get the math.',
     link: '#',
+    live: false,
   },
 ]
 
@@ -138,6 +161,10 @@ export default function Products() {
       {/* ── TOOLS GRID ── */}
       <section className={styles.toolsSection}>
         <div className="section-wrapper">
+          <div className={styles.exampleBanner}>
+            <span className={styles.exampleIcon}>◈</span>
+            <span>These projects are being built by club members over time. path402 is the only live product today — the rest are examples of what's coming.</span>
+          </div>
           <div className={styles.toolsGrid}>
             {TOOLS.map((tool) => (
               <div key={tool.id} className={`${styles.toolCard} ${styles[`card_${tool.color}`]}`}>
@@ -163,9 +190,15 @@ export default function Products() {
                   ))}
                 </div>
 
-                <a href={tool.link} className={`${styles.toolBtn} ${styles[`btn_${tool.color}`]}`}>
-                  ACCESS TOOL <span>→</span>
-                </a>
+                {tool.live ? (
+                  <a href={tool.link} target="_blank" rel="noreferrer" className={`${styles.toolBtn} ${styles[`btn_${tool.color}`]}`}>
+                    ACCESS TOOL <span>→</span>
+                  </a>
+                ) : (
+                  <span className={styles.toolBtnDisabled}>
+                    IN PROGRESS
+                  </span>
+                )}
 
                 {/* Corner accent */}
                 <div className={`${styles.cornerAccent} ${styles[`corner_${tool.color}`]}`} />
