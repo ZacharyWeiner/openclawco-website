@@ -4,69 +4,69 @@ import { Link } from 'react-router-dom'
 const UPCOMING_EVENTS = [
   {
     id: 1,
-    date: { month: 'APR', day: '08', year: '2025' },
-    title: 'Inbox Zero in 60 Minutes',
-    subtitle: 'AI-Powered Email Triage & Auto-Reply Systems',
+    date: { month: 'APR', day: '01', year: '2026' },
+    title: 'Set Up Your OpenClaw Agent',
+    subtitle: 'From Unboxing to "Holy Crap It Just Did That"',
     type: 'WORKSHOP',
     color: 'cyan',
     location: 'Denver Tech Center',
     time: '6:30 PM – 9:00 PM',
-    spots: 12,
-    tags: ['Email', 'Automation', 'Productivity'],
-    desc: 'We\'ll build a live AI email triage system — categorizing, drafting replies, and scheduling follow-ups. Bring your inbox chaos. Leave with order.',
+    spots: 25,
+    tags: ['Setup', 'Beginner', 'Hands-On'],
+    desc: 'First time with OpenClaw? We\'ll walk through the full setup — connect Telegram or Discord, install your first skill from ClawHub, and get your agent doing something useful before you leave. Bring a laptop and your phone.',
     featured: true,
   },
   {
     id: 2,
-    date: { month: 'APR', day: '15', year: '2025' },
-    title: 'AI Scheduling Agents',
-    subtitle: 'Never Touch a Calendar App Again',
+    date: { month: 'APR', day: '08', year: '2026' },
+    title: 'Let Your Agent Handle Your Inbox',
+    subtitle: 'Morning Rollups, Auto-Replies, and Zero Manual Sorting',
     type: 'BUILD SESSION',
     color: 'magenta',
-    location: 'Boulder Commons',
-    time: '6:00 PM – 8:30 PM',
-    spots: 18,
-    tags: ['Scheduling', 'Agents', 'Calendar'],
-    desc: 'End-to-end AI scheduling: parsing availability, drafting calendar invites, handling cancellations. We\'ll build it live, together.',
+    location: 'Denver Tech Center',
+    time: '6:30 PM – 9:00 PM',
+    spots: 20,
+    tags: ['Email', 'Gmail', 'Automation'],
+    desc: 'Connect your agent to Gmail and set up a morning rollup — it reads your overnight emails, summarizes what matters, flags urgent items, and drafts replies. One member cleared 10,000 emails on day one. We\'ll get you started.',
     featured: false,
   },
   {
     id: 3,
-    date: { month: 'APR', day: '22', year: '2025' },
-    title: 'Content Pipeline Automation',
-    subtitle: 'From Idea to Published in Under 10 Minutes',
-    type: 'DEMO NIGHT',
+    date: { month: 'APR', day: '15', year: '2026' },
+    title: 'Smart Home Night',
+    subtitle: 'Give Your Agent Eyes and Ears Around the House',
+    type: 'BUILD SESSION',
     color: 'green',
     location: 'Denver Tech Center',
     time: '6:30 PM – 9:00 PM',
-    spots: 24,
-    tags: ['Content', 'Writing', 'Social Media'],
-    desc: 'Members demo their best AI content workflows. Vote on the most impressive. Steal each other\'s ideas. That\'s the whole point.',
+    spots: 20,
+    tags: ['Smart Home', 'Home Assistant', 'Alexa'],
+    desc: 'Connect OpenClaw to your smart home — Home Assistant, Alexa, HomePods, whatever you\'ve got. One member\'s agent discovered HomePods on the network and built its own control skill. We\'ll help you set up lights, locks, routines, and more.',
     featured: false,
   },
   {
     id: 4,
-    date: { month: 'APR', day: '29', year: '2025' },
-    title: 'Agent Collab Night',
-    subtitle: 'Team Builds: Multi-Agent Workflow Jam',
-    type: 'HACKATHON',
+    date: { month: 'APR', day: '22', year: '2026' },
+    title: 'Calendar, Meal Plans & Family Ops',
+    subtitle: 'Turn Your Agent Into Your Household Manager',
+    type: 'WORKSHOP',
     color: 'cyan',
-    location: 'TBD (Announced Week-Of)',
-    time: '5:00 PM – 10:00 PM',
-    spots: 30,
-    tags: ['Agents', 'Teamwork', 'Competition'],
-    desc: 'Teams of 3-4 compete to build the most impressive multi-agent workflow in 3 hours. Winners get bragging rights and a permanent spot in club lore.',
+    location: 'Denver Tech Center',
+    time: '6:30 PM – 9:00 PM',
+    spots: 25,
+    tags: ['Calendar', 'Family', 'Productivity'],
+    desc: 'Manage your calendar by chat, build a weekly meal plan in Notion, get a morning brief with weather and your schedule, and set up reminders for the whole family. One member saves an hour a week just on meal planning. Beginners welcome.',
     featured: false,
   },
 ]
 
 const SESSION_ANATOMY = [
-  { time: '6:30', label: 'Doors Open', desc: 'Arrive, set up, grab a coffee. Organizers available for questions.' },
-  { time: '6:45', label: 'Lightning Demo', desc: '15-minute live demonstration of a working AI tool or workflow.' },
-  { time: '7:00', label: 'Main Build', desc: 'The core session — collaborative hands-on building. Laptops out.' },
-  { time: '8:15', label: 'Show & Tell', desc: 'Members share what they built or improved during the session.' },
-  { time: '8:45', label: 'Open Lab', desc: 'Free build time. Work on your own project with group support.' },
-  { time: '9:00', label: 'Wrap', desc: 'Recap, next event preview, and one mandatory "what I\'m taking home" per person.' },
+  { time: '6:30', label: 'Doors Open', desc: 'Show up, grab a seat, get your laptop set up. Organizers can help with any setup issues.' },
+  { time: '6:45', label: 'Quick Intro', desc: '10-minute overview of the night\'s topic and what you\'ll walk away with.' },
+  { time: '7:00', label: 'Hands-On Build', desc: 'The main session — follow along step by step or go at your own pace. Helpers float the room.' },
+  { time: '8:00', label: 'Show & Tell', desc: 'Volunteers share what they built. Ask questions, get feedback, steal ideas.' },
+  { time: '8:30', label: 'Open Build', desc: 'Stay and keep working. Get 1-on-1 help or start applying what you learned to your own project.' },
+  { time: '9:00', label: 'Wrap Up', desc: 'Quick recap, next week\'s topic preview, and networking.' },
 ]
 
 const typeColors = {
@@ -196,28 +196,28 @@ export default function Events() {
           <div className={styles.faqGrid}>
             {[
               {
-                q: 'Do I need to be technical?',
-                a: 'No. We have engineers, executives, solopreneurs, and absolute beginners. The group helps everyone learn — that\'s the culture we enforce.'
+                q: 'Do I need to know how to code?',
+                a: 'No. Many of our members have zero coding background. Sessions are designed so anyone can follow along. If you can use a browser, you can build with AI.'
               },
               {
                 q: 'What should I bring?',
-                a: 'A laptop, something you\'ve been meaning to automate for the last 6 months, and an open mind. That\'s the full list.'
+                a: 'A laptop with a browser. Some sessions use specific tools — we\'ll include setup instructions in the event details so you can come prepared.'
               },
               {
                 q: 'Is it free?',
-                a: 'Yes. Always. We may do optional paid workshops for specific deep-dives, but the core weekly meetup costs nothing.'
+                a: 'Yes. Every session is free. No upsells, no paid tiers. We\'re a community club, not a business.'
               },
               {
                 q: 'What AI tools do you use?',
-                a: 'We\'re tool-agnostic. Claude, GPT, Gemini, open-source — whatever works for the task. We teach principles, not platforms.'
+                a: 'Mostly Claude, ChatGPT, and open-source tools. We teach the thinking behind AI workflows, not just one platform. Use whatever works for you.'
               },
               {
                 q: 'How often do you meet?',
-                a: 'Weekly. Every Tuesday or Wednesday (rotates). We take one week off per quarter, and always give ≥7 days notice.'
+                a: 'Every Wednesday evening in Denver. Check this page for the latest schedule and topics.'
               },
               {
                 q: 'Can I present or demo something?',
-                a: 'Please do. Reach out at the event or email us. The best sessions are the ones where members run the show.'
+                a: 'Absolutely. Demo Night is open to all members. Just let us know at the event or reach out ahead of time. We love seeing what people build.'
               },
             ].map(({ q, a }) => (
               <div key={q} className={styles.faqCard}>
