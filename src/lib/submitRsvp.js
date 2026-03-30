@@ -1,4 +1,4 @@
-export async function submitRsvp({ name, email, event }) {
+export async function submitRsvp({ name, email, event, eventDate, guests }) {
   const url = import.meta.env.VITE_APPS_SCRIPT_URL
   if (!url) throw new Error('Apps Script URL not configured')
 
@@ -9,6 +9,8 @@ export async function submitRsvp({ name, email, event }) {
       name,
       email,
       event,
+      eventDate,
+      guests: guests || '',
       timestamp: new Date().toISOString(),
     }),
   })

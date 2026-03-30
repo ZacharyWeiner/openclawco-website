@@ -81,13 +81,13 @@ const typeColors = {
 
 export default function Events() {
   const [rsvpEvent, setRsvpEvent] = useState(null)
-  const [rsvpForm, setRsvpForm] = useState({ name: '', email: '' })
+  const [rsvpForm, setRsvpForm] = useState({ name: '', email: '', guests: '' })
   const [rsvpStatus, setRsvpStatus] = useState('idle') // idle | loading | success | error
   const [rsvpError, setRsvpError] = useState('')
 
   const openRsvp = (ev) => {
     setRsvpEvent(ev)
-    setRsvpForm({ name: '', email: '' })
+    setRsvpForm({ name: '', email: '', guests: '' })
     setRsvpStatus('idle')
     setRsvpError('')
   }
@@ -103,7 +103,8 @@ export default function Events() {
     setRsvpStatus('loading')
     setRsvpError('')
     try {
-      await submitRsvp({ name: rsvpForm.name, email: rsvpForm.email, event: rsvpEvent.title })
+      const eventDate = `${rsvpEvent.date.month} ${rsvpEvent.date.day}, ${rsvpEvent.date.year}`
+      await submitRsvp({ name: rsvpForm.name, email: rsvpForm.email, event: rsvpEvent.title, eventDate, guests: rsvpForm.guests })
       setRsvpStatus('success')
     } catch (err) {
       setRsvpError(err.message || 'Something went wrong. Please try again.')
@@ -318,6 +319,17 @@ export default function Events() {
                       value={rsvpForm.email}
                       onChange={e => setRsvpForm(f => ({ ...f, email: e.target.value }))}
                       required
+                    />
+                  </div>
+
+                  <div className={styles.modalField}>
+                    <label className={styles.modalLabel}>BRINGING GUESTS? (OPTIONAL)</label>
+                    <textarea
+                      className={`${styles.modalInput} ${styles.modalTextarea}`}
+                      placeholder="One name per line"
+                      value={rsvpForm.guests}
+                      onChange={e => setRsvpForm(f => ({ ...f, guests: e.target.value }))}
+                      rows={3}
                     />
                   </div>
 
