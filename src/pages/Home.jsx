@@ -222,6 +222,40 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── QR CODES ── */}
+      <section className={styles.qrSection}>
+        <div className="section-wrapper">
+          <div className={styles.sectionHeader}>
+            <span className={styles.sectionEyebrow}>CONNECT</span>
+            <h2 className={styles.sectionTitle}>
+              SCAN. <span className="neon-cyan">JOIN. BUILD.</span>
+            </h2>
+            <p className={styles.sectionDesc}>
+              Grab a QR code — visit our site or jump straight into the Discord.
+            </p>
+          </div>
+
+          <div className={styles.qrGrid}>
+            <div className={styles.qrCard}>
+              <img src="/openclawco-qr.png" alt="QR code for openclawco.club" className={styles.qrImage} />
+              <h3 className={styles.qrLabel}>OPENCLAWCO.CLUB</h3>
+              <p className={styles.qrDesc}>Our home base — events, membership, and everything OpenClaw.</p>
+              <a href="/openclawco-qr.png" download="openclawco-qr.png" className={styles.qrDownload}>
+                DOWNLOAD QR <span>↓</span>
+              </a>
+            </div>
+            <div className={styles.qrCard}>
+              <img src="/discord-qr.png" alt="QR code for OpenClaw Discord" className={styles.qrImage} />
+              <h3 className={styles.qrLabel}>DISCORD</h3>
+              <p className={styles.qrDesc}>Join the conversation — share builds, ask questions, connect with the crew.</p>
+              <a href="/discord-qr.png" download="discord-qr.png" className={styles.qrDownload}>
+                DOWNLOAD QR <span>↓</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── CTA BANNER ── */}
       <section className={styles.ctaBanner}>
         <div className={styles.ctaBannerBg} />
