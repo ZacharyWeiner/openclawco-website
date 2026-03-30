@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styles from './Join.module.css'
+import { submitToSheet } from '../lib/submitToSheet'
 
 const INTEREST_OPTIONS = [
   'Email / Inbox automation',
@@ -35,7 +36,7 @@ Just write the message directly, no subject line or extra formatting.`
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': window.__ANTHROPIC_API_KEY__ || '',
+      'x-api-key': import.meta.env.VITE_ANTHROPIC_API_KEY || '',
       'anthropic-version': '2023-06-01',
       'anthropic-dangerous-direct-browser-access': 'true',
     },
@@ -76,7 +77,10 @@ export default function Join() {
     setStatus('loading')
     setError('')
     try {
-      const msg = await generateWelcome(form.name, form.background, form.reason)
+      const [msg] = await Promise.all([
+        generateWelcome(form.name, form.background, form.reason),
+        submitToSheet(form),
+      ])
       setWelcome(msg)
       setStatus('success')
     } catch (err) {
@@ -288,7 +292,7 @@ export default function Join() {
 
               <p className={styles.formNote}>
                 Submitting generates a personalized AI welcome message using Claude.
-                Your info is not stored or sold — ever.
+                Your info is stored securely for club membership only — never sold or shared.
               </p>
             </form>
           </div>
