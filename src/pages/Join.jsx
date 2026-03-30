@@ -14,53 +14,9 @@ const INTEREST_OPTIONS = [
   'Just curious about AI',
 ]
 
-async function generateWelcome(name, background, reason) {
-  const prompt = `You are the OpenClaw Colorado Club AI. A new member just joined our hands-on AI meetup group.
-
-Their name: ${name}
-Their background: ${background}
-Why they're joining: ${reason}
-
-Write a personalized, energetic, and warm welcome message for them. It should:
-- Address them by first name
-- Reference something specific about their background and reason for joining
-- Tell them what their first session experience will be like
-- Mention 1-2 specific ways OpenClaw will help them specifically
-- End with something punchy and exciting about the community
-- Be 3-4 short paragraphs
-- Have a neon cyberpunk energy but still be genuine and human
-- Do NOT use generic phrases like "Welcome aboard!" or "Excited to have you"
-
-Just write the message directly, no subject line or extra formatting.`
-
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': import.meta.env.VITE_ANTHROPIC_API_KEY || '',
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1000,
-      messages: [{ role: 'user', content: prompt }],
-    }),
-  })
-
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}))
-    throw new Error(err?.error?.message || `API error ${response.status}`)
-  }
-
-  const data = await response.json()
-  return data.content[0].text
-}
-
 export default function Join() {
   const [form, setForm] = useState({ name: '', email: '', background: '', reason: '', interests: [] })
   const [status, setStatus] = useState('idle') // idle | loading | welcome | bioSubmitting | done | error
-  const [welcome, setWelcome] = useState('')
   const [error, setError] = useState('')
   const [bioForm, setBioForm] = useState({ role: '', bio: '' })
   const [bioError, setBioError] = useState('')
@@ -80,11 +36,7 @@ export default function Join() {
     setStatus('loading')
     setError('')
     try {
-      const [msg] = await Promise.all([
-        generateWelcome(form.name, form.background, form.reason),
-        submitToSheet(form),
-      ])
-      setWelcome(msg)
+      await submitToSheet(form)
       setStatus('welcome')
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.')
@@ -125,19 +77,6 @@ export default function Join() {
               <p className={styles.successName}>{form.name}</p>
             </div>
 
-            <div className={styles.welcomeMessage}>
-              <div className={styles.welcomeLabel}>
-                <span className={styles.wlDot} />
-                <span>AI-GENERATED WELCOME MESSAGE</span>
-                <span className={styles.wlDot} />
-              </div>
-              <div className={styles.welcomeText}>
-                {welcome.split('\n').filter(Boolean).map((para, i) => (
-                  <p key={i}>{para}</p>
-                ))}
-              </div>
-            </div>
-
             {status === 'done' ? (
               <div className={styles.bioConfirm}>
                 <span className={styles.bioConfirmEyebrow}>◈ BIO SUBMITTED</span>
@@ -150,18 +89,16 @@ export default function Join() {
                   <p className={styles.bioStepCopy}>Show up on the members page. Tell the club what you're building.</p>
                 </div>
                 <form onSubmit={handleBioSubmit} className={styles.bioStepForm}>
-                  <div className={styles.bioStepRow}>
-                    <div className={styles.bioStepField}>
-                      <label className={styles.bioStepLabel}>YOUR ROLE *</label>
-                      <input
-                        className={styles.bioStepInput}
-                        type="text"
-                        placeholder="Developer, Founder, etc."
-                        value={bioForm.role}
-                        onChange={e => setBioForm(f => ({ ...f, role: e.target.value }))}
-                        required
-                      />
-                    </div>
+                  <div className={styles.bioStepField}>
+                    <label className={styles.bioStepLabel}>YOUR ROLE *</label>
+                    <input
+                      className={styles.bioStepInput}
+                      type="text"
+                      placeholder="Developer, Founder, etc."
+                      value={bioForm.role}
+                      onChange={e => setBioForm(f => ({ ...f, role: e.target.value }))}
+                      required
+                    />
                   </div>
                   <div className={styles.bioStepField}>
                     <label className={styles.bioStepLabel}>YOUR BIO *</label>
@@ -235,7 +172,7 @@ export default function Join() {
             <span className="neon-cyan">START BUILDING.</span>
           </h1>
           <p className={styles.pageSubtitle}>
-            Fill this out. An AI will personally welcome you. Then show up Tuesday.
+            Fill this out. Then show up Tuesday.
           </p>
         </div>
       </section>
@@ -340,7 +277,7 @@ export default function Join() {
                 </div>
               </div>
 
-              {error && (
+              {status === 'error' && (
                 <div className={styles.errorBox}>
                   <span className={styles.errorIcon}>⚠</span>
                   <span>{error}</span>
@@ -355,7 +292,7 @@ export default function Join() {
                 {status === 'loading' ? (
                   <>
                     <span className={styles.spinner} />
-                    <span>AI IS WRITING YOUR WELCOME...</span>
+                    <span>SUBMITTING...</span>
                   </>
                 ) : (
                   <>
@@ -366,7 +303,6 @@ export default function Join() {
               </button>
 
               <p className={styles.formNote}>
-                Submitting generates a personalized AI welcome message using Claude.
                 Your info is stored securely for club membership only — never sold or shared.
               </p>
             </form>
