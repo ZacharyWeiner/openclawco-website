@@ -173,9 +173,9 @@
 }
 
 .input {
-  background: rgba(0,255,255,0.03);
-  border: 1px solid rgba(0,255,255,0.15);
-  color: var(--text);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
   font-family: var(--font-body);
   font-size: 0.9rem;
   padding: 0.85rem 1rem;
@@ -185,12 +185,13 @@
 }
 
 .input::placeholder {
-  color: rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.4);
 }
 
 .input:focus {
-  border-color: rgba(0,255,255,0.5);
-  box-shadow: 0 0 15px rgba(0,255,255,0.08), inset 0 0 10px rgba(0,255,255,0.03);
+  border-color: rgba(0,255,255,0.6);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 0 15px rgba(0,255,255,0.08);
 }
 
 .textarea {
@@ -527,9 +528,9 @@
 }
 
 .bioStepInput {
-  background: rgba(0,255,255,0.02);
-  border: 1px solid rgba(0,255,255,0.12);
-  color: var(--text);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
   font-family: var(--font-body);
   font-size: 0.85rem;
   padding: 0.7rem 0.9rem;
@@ -539,7 +540,7 @@
 }
 
 .bioStepInput::placeholder {
-  color: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.4);
 }
 
 .bioStepInput:focus {
