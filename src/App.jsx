@@ -8,6 +8,7 @@ import Events from './pages/Events'
 import Products from './pages/Products'
 import Join from './pages/Join'
 import Members from './pages/Members'
+import Install from './pages/Install'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -28,6 +29,7 @@ function App() {
           <Route path="/products" element={<Products />} />
           <Route path="/join" element={<Join />} />
           <Route path="/members" element={<Members />} />
+          <Route path="/install" element={<Install />} />
         </Routes>
       </main>
       <Footer />

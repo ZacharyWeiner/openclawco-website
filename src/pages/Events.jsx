@@ -14,6 +14,7 @@ const UPCOMING_EVENTS = [
     spots: 25,
     tags: ['Setup', 'Beginner', 'Hands-On'],
     desc: 'First time with OpenClaw? We\'ll walk through the full setup — connect Telegram or Discord, install your first skill from ClawHub, and get your agent doing something useful before you leave. Bring a laptop and your phone.',
+    link: '/install',
     featured: true,
   },
   {
@@ -147,8 +148,8 @@ export default function Events() {
                       ))}
                     </div>
 
-                    <Link to="/join" className={`${styles.rsvpBtn} ${styles[`rsvp_${ev.color}`]}`}>
-                      RSVP <span>→</span>
+                    <Link to={ev.link || '/join'} className={`${styles.rsvpBtn} ${styles[`rsvp_${ev.color}`]}`}>
+                      {ev.link ? 'GET STARTED' : 'RSVP'} <span>→</span>
                     </Link>
                   </div>
                 </div>
