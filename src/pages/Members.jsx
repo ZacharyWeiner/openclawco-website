@@ -64,11 +64,6 @@ export default function Members() {
             })}
           </div>
 
-          <div className={styles.moreMembers}>
-            <span className={styles.moreDot} />
-            <span className={styles.moreText}>+ 80 more members building weekly</span>
-            <span className={styles.moreDot} />
-          </div>
         </div>
       </section>
     </div>
