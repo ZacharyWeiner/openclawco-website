@@ -2,6 +2,8 @@ import { useState } from 'react'
 import styles from './Events.module.css'
 import { Link } from 'react-router-dom'
 import { submitRsvp } from '../lib/submitRsvp'
+import { submitSuggestion } from '../lib/submitSuggestion'
+import { submitUpvote } from '../lib/submitUpvote'
 
 const UPCOMING_EVENTS = [
   {
@@ -85,6 +87,51 @@ export default function Events() {
   const [rsvpStatus, setRsvpStatus] = useState('idle') // idle | loading | success | error
   const [rsvpError, setRsvpError] = useState('')
 
+  // Suggest event state
+  const [suggestOpen, setSuggestOpen] = useState(false)
+  const [suggestForm, setSuggestForm] = useState({ name: '', email: '', title: '', description: '' })
+  const [suggestStatus, setSuggestStatus] = useState('idle')
+  const [suggestError, setSuggestError] = useState('')
+
+  // Upvote state
+  const [upvoted, setUpvoted] = useState({})
+
+  const openSuggest = () => {
+    setSuggestForm({ name: '', email: '', title: '', description: '' })
+    setSuggestStatus('idle')
+    setSuggestError('')
+    setSuggestOpen(true)
+  }
+
+  const closeSuggest = () => {
+    setSuggestOpen(false)
+    setSuggestStatus('idle')
+  }
+
+  const handleSuggest = async (e) => {
+    e.preventDefault()
+    if (!suggestForm.name || !suggestForm.title) return
+    setSuggestStatus('loading')
+    setSuggestError('')
+    try {
+      await submitSuggestion(suggestForm)
+      setSuggestStatus('success')
+    } catch (err) {
+      setSuggestError(err.message || 'Something went wrong. Please try again.')
+      setSuggestStatus('error')
+    }
+  }
+
+  const handleUpvote = async (ev) => {
+    if (upvoted[ev.id]) return
+    setUpvoted(prev => ({ ...prev, [ev.id]: true }))
+    try {
+      await submitUpvote({ event: ev.title })
+    } catch {
+      setUpvoted(prev => ({ ...prev, [ev.id]: false }))
+    }
+  }
+
   const openRsvp = (ev) => {
     setRsvpEvent(ev)
     setRsvpForm({ name: '', email: '', guests: '' })
@@ -130,6 +177,9 @@ export default function Events() {
           <p className={styles.pageSubtitle}>
             Every week. Different format. Same guarantee: you leave with something working.
           </p>
+          <button className={styles.suggestBtn} onClick={openSuggest}>
+            SUGGEST AN EVENT <span>→</span>
+          </button>
         </div>
       </section>
 
@@ -182,18 +232,27 @@ export default function Events() {
                       ))}
                     </div>
 
-                    {ev.link ? (
-                      <Link to={ev.link} className={`${styles.rsvpBtn} ${styles[`rsvp_${ev.color}`]}`}>
-                        GET STARTED <span>→</span>
-                      </Link>
-                    ) : (
+                    <div className={styles.eventActions}>
+                      {ev.link ? (
+                        <Link to={ev.link} className={`${styles.rsvpBtn} ${styles[`rsvp_${ev.color}`]}`}>
+                          GET STARTED <span>→</span>
+                        </Link>
+                      ) : (
+                        <button
+                          className={`${styles.rsvpBtn} ${styles[`rsvp_${ev.color}`]}`}
+                          onClick={() => openRsvp(ev)}
+                        >
+                          RSVP <span>→</span>
+                        </button>
+                      )}
                       <button
-                        className={`${styles.rsvpBtn} ${styles[`rsvp_${ev.color}`]}`}
-                        onClick={() => openRsvp(ev)}
+                        className={`${styles.upvoteBtn} ${upvoted[ev.id] ? styles.upvoted : ''}`}
+                        onClick={() => handleUpvote(ev)}
+                        disabled={upvoted[ev.id]}
                       >
-                        RSVP <span>→</span>
+                        {upvoted[ev.id] ? '▲ UPVOTED' : '▲ UPVOTE'}
                       </button>
-                    )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -343,6 +402,86 @@ export default function Events() {
                     className={styles.modalSubmit}
                   >
                     {rsvpStatus === 'loading' ? 'SUBMITTING...' : 'CONFIRM RSVP →'}
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+      {/* ── SUGGEST EVENT MODAL ── */}
+      {suggestOpen && (
+        <div className={styles.modalOverlay} onClick={closeSuggest}>
+          <div className={styles.modal} onClick={e => e.stopPropagation()}>
+            <button className={styles.modalClose} onClick={closeSuggest}>✕</button>
+
+            {suggestStatus === 'success' ? (
+              <div className={styles.modalSuccess}>
+                <div className={styles.modalSuccessIcon}>◈</div>
+                <h3 className={styles.modalSuccessTitle}>SUGGESTION SUBMITTED</h3>
+                <p className={styles.modalSuccessNote}>Thanks! We'll review it and add it to the calendar if there's enough interest.</p>
+                <button className={styles.modalDoneBtn} onClick={closeSuggest}>DONE</button>
+              </div>
+            ) : (
+              <>
+                <span className={styles.modalEyebrow}>SUGGEST AN EVENT</span>
+                <h3 className={styles.modalTitle}>What Should We Build Next?</h3>
+                <p className={styles.modalDate}>Tell us what OpenClaw topic you want to explore.</p>
+
+                <form onSubmit={handleSuggest} className={styles.modalForm}>
+                  <div className={styles.modalField}>
+                    <label className={styles.modalLabel}>YOUR NAME *</label>
+                    <input
+                      className={styles.modalInput}
+                      type="text"
+                      placeholder="Your name"
+                      value={suggestForm.name}
+                      onChange={e => setSuggestForm(f => ({ ...f, name: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div className={styles.modalField}>
+                    <label className={styles.modalLabel}>EMAIL (OPTIONAL)</label>
+                    <input
+                      className={styles.modalInput}
+                      type="email"
+                      placeholder="you@example.com"
+                      value={suggestForm.email}
+                      onChange={e => setSuggestForm(f => ({ ...f, email: e.target.value }))}
+                    />
+                  </div>
+                  <div className={styles.modalField}>
+                    <label className={styles.modalLabel}>EVENT TITLE *</label>
+                    <input
+                      className={styles.modalInput}
+                      type="text"
+                      placeholder="e.g. Automate My Side Hustle"
+                      value={suggestForm.title}
+                      onChange={e => setSuggestForm(f => ({ ...f, title: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div className={styles.modalField}>
+                    <label className={styles.modalLabel}>DESCRIPTION (OPTIONAL)</label>
+                    <textarea
+                      className={`${styles.modalInput} ${styles.modalTextarea}`}
+                      placeholder="What would this session cover? What would people build or learn?"
+                      value={suggestForm.description}
+                      onChange={e => setSuggestForm(f => ({ ...f, description: e.target.value }))}
+                      rows={3}
+                    />
+                  </div>
+
+                  {suggestStatus === 'error' && (
+                    <div className={styles.modalError}>⚠ {suggestError}</div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={suggestStatus === 'loading'}
+                    className={styles.modalSubmit}
+                  >
+                    {suggestStatus === 'loading' ? 'SUBMITTING...' : 'SUBMIT SUGGESTION →'}
                   </button>
                 </form>
               </>
