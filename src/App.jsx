@@ -9,6 +9,7 @@ import Products from './pages/Products'
 import Join from './pages/Join'
 import Members from './pages/Members'
 import Install from './pages/Install'
+import OpenClawOverview from './pages/OpenClawOverview'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -30,6 +31,7 @@ function App() {
           <Route path="/join" element={<Join />} />
           <Route path="/members" element={<Members />} />
           <Route path="/install" element={<Install />} />
+          <Route path="/openclaw" element={<OpenClawOverview />} />
         </Routes>
       </main>
       <Footer />
