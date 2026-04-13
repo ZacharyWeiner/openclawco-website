@@ -298,6 +298,82 @@
   padding: 0.2rem 0.5rem;
 }
 
+.promptBlock {
+  margin-bottom: 1.2rem;
+  border: 1px solid rgba(255, 0, 255, 0.18);
+  background: rgba(255, 0, 255, 0.03);
+}
+
+.promptSummary {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--magenta);
+  padding: 0.7rem 0.9rem;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s ease;
+}
+
+.promptSummary::-webkit-details-marker {
+  display: none;
+}
+
+.promptSummary:hover {
+  background: rgba(255, 0, 255, 0.06);
+}
+
+.promptCaret {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  color: var(--magenta);
+}
+
+.promptBlock[open] .promptCaret {
+  transform: rotate(90deg);
+}
+
+.promptBody {
+  padding: 0 0.9rem 0.9rem;
+  border-top: 1px solid rgba(255, 0, 255, 0.12);
+  padding-top: 0.9rem;
+}
+
+.promptText {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--text-bright);
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0 0 0.8rem 0;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.promptCopy {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--magenta);
+  background: none;
+  border: 1px solid rgba(255, 0, 255, 0.3);
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.promptCopy:hover {
+  border-color: rgba(255, 0, 255, 0.6);
+  box-shadow: 0 0 12px rgba(255, 0, 255, 0.2);
+  background: rgba(255, 0, 255, 0.05);
+}
+
 .eventActions {
   display: flex;
   align-items: center;

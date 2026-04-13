@@ -8,7 +8,7 @@ import { submitUpvote } from '../lib/submitUpvote'
 const UPCOMING_EVENTS = [
   {
     id: 1,
-    date: { month: 'APR', day: '01', year: '2026' },
+    date: { month: 'MAR', day: '30', year: '2026' },
     title: 'Set Up Your OpenClaw Agent',
     subtitle: 'From Unboxing to "Holy Crap It Just Did That"',
     type: 'WORKSHOP',
@@ -23,7 +23,7 @@ const UPCOMING_EVENTS = [
   },
   {
     id: 2,
-    date: { month: 'APR', day: '08', year: '2026' },
+    date: { month: 'APR', day: '06', year: '2026' },
     title: 'Let Your Agent Handle Your Inbox',
     subtitle: 'Morning Rollups, Auto-Replies, and Zero Manual Sorting',
     type: 'BUILD SESSION',
@@ -34,24 +34,63 @@ const UPCOMING_EVENTS = [
     tags: ['Email', 'Gmail', 'Automation'],
     desc: 'Connect your agent to Gmail and set up a morning rollup — it reads your overnight emails, summarizes what matters, flags urgent items, and drafts replies. One member cleared 10,000 emails on day one. We\'ll get you started.',
     featured: false,
+    prompt: `You are my inbox manager. Every morning, process my Gmail from the last 24 hours and deliver one rollup.
+
+1. CATEGORIZE every unread email:
+   • URGENT — needs my reply or action today (clients, deadlines, blockers)
+   • FYI — worth knowing, no action (updates, confirmations, newsletters I actually read)
+   • AUTO — promos, receipts, social, cold outreach → archive or label, don't surface
+
+2. SUMMARIZE urgent + FYI in plain English. For each urgent item: sender, one-line context, what they want from me.
+
+3. DRAFT replies for every urgent item. Save as Gmail drafts — never send. Match my voice: direct, lowercase, no filler.
+
+4. FLAG anything ambiguous before acting.
+
+Rules:
+- Never delete. Archive or label only.
+- Never auto-send. Drafts only.
+- If a thread has 3+ back-and-forths, include full context in the summary.
+- Learn from corrections: if I move something you marked FYI to urgent, remember that sender.
+
+Deliver at 7am. Keep it scannable — I want to be through my inbox in 5 minutes.`,
   },
   {
     id: 3,
-    date: { month: 'APR', day: '15', year: '2026' },
-    title: 'Smart Home Night',
-    subtitle: 'Give Your Agent Eyes and Ears Around the House',
+    date: { month: 'APR', day: '13', year: '2026' },
+    title: 'Your Personal Knowledge Base',
+    subtitle: 'Feed Your Agent Your Notes, Docs & Life — Ask It Anything',
     type: 'BUILD SESSION',
     color: 'green',
     location: 'Denver Tech Center',
     time: '6:30 PM – 9:00 PM',
     spots: 20,
-    tags: ['Smart Home', 'Home Assistant', 'Alexa'],
-    desc: 'Connect OpenClaw to your smart home — Home Assistant, Alexa, HomePods, whatever you\'ve got. One member\'s agent discovered HomePods on the network and built its own control skill. We\'ll help you set up lights, locks, routines, and more.',
+    tags: ['Memory', 'Notes', 'RAG'],
+    desc: 'Drop in your notes, journals, meeting transcripts, saved articles, whatever you\'ve got. Your agent indexes it all and becomes the memory you wish you had — find that thing you wrote three years ago, surface patterns across years of thinking, pull context you\'d forgotten. Bring your files.',
     featured: false,
+    prompt: `You are my personal knowledge base. I'm feeding you my notes, journals, docs, saved articles, meeting transcripts, and anything else I've written or collected. Your job is to make all of it searchable and useful.
+
+1. INDEX everything I give you. Tag by topic, people mentioned, date written, and source (journal, meeting, article, etc.). Keep the original text — never paraphrase into the index.
+
+2. ANSWER questions by quoting the source directly. For every answer, cite: source file, date, and a short excerpt. If the answer spans multiple sources, list them.
+
+3. SURFACE PATTERNS when I ask open questions ("how have I been thinking about X lately?", "what did I decide about Y?"). Pull the relevant excerpts and let me draw the conclusion — don't over-summarize.
+
+4. TRACK LOOSE ENDS — commitments I made, people I said I'd follow up with, ideas I wrote down and never revisited. Flag these weekly.
+
+5. RESPECT PRIVACY. This is my second brain. Never send contents to external tools without asking. No summaries posted anywhere. Local-first.
+
+Rules:
+- Don't invent or infer. If it's not in my notes, say "not in the KB."
+- Prefer direct quotes over paraphrases.
+- When I ask about a person, pull every note mentioning them, chronologically.
+- When I ask about a decision, show me what I was thinking at the time, not just the outcome.
+
+Start by asking what I want to load first.`,
   },
   {
     id: 4,
-    date: { month: 'APR', day: '22', year: '2026' },
+    date: { month: 'APR', day: '20', year: '2026' },
     title: 'Calendar, Meal Plans & Family Ops',
     subtitle: 'Turn Your Agent Into Your Household Manager',
     type: 'WORKSHOP',
@@ -95,6 +134,17 @@ export default function Events() {
 
   // Upvote state
   const [upvoted, setUpvoted] = useState({})
+
+  // Prompt copy state
+  const [copiedId, setCopiedId] = useState(null)
+
+  const copyPrompt = async (ev) => {
+    try {
+      await navigator.clipboard.writeText(ev.prompt)
+      setCopiedId(ev.id)
+      setTimeout(() => setCopiedId(c => (c === ev.id ? null : c)), 2000)
+    } catch {}
+  }
 
   const openSuggest = () => {
     setSuggestForm({ name: '', email: '', title: '', description: '' })
@@ -232,6 +282,25 @@ export default function Events() {
                       ))}
                     </div>
 
+                    {ev.prompt && (
+                      <details className={styles.promptBlock}>
+                        <summary className={styles.promptSummary}>
+                          <span className={styles.promptCaret}>▸</span>
+                          EXAMPLE PROMPT
+                        </summary>
+                        <div className={styles.promptBody}>
+                          <pre className={styles.promptText}>{ev.prompt}</pre>
+                          <button
+                            type="button"
+                            className={styles.promptCopy}
+                            onClick={() => copyPrompt(ev)}
+                          >
+                            {copiedId === ev.id ? '✓ COPIED' : '⧉ COPY PROMPT'}
+                          </button>
+                        </div>
+                      </details>
+                    )}
+
                     <div className={styles.eventActions}>
                       {ev.link ? (
                         <Link to={ev.link} className={`${styles.rsvpBtn} ${styles[`rsvp_${ev.color}`]}`}>
@@ -316,7 +385,7 @@ export default function Events() {
               },
               {
                 q: 'How often do you meet?',
-                a: 'Every Wednesday evening in Denver. Check this page for the latest schedule and topics.'
+                a: 'Every Monday evening in Denver. Check this page for the latest schedule and topics.'
               },
               {
                 q: 'Can I present or demo something?',
