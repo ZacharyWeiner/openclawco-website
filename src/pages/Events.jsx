@@ -91,16 +91,29 @@ Start by asking what I want to load first.`,
   {
     id: 4,
     date: { month: 'APR', day: '20', year: '2026' },
-    title: 'Calendar, Meal Plans & Family Ops',
-    subtitle: 'Turn Your Agent Into Your Household Manager',
-    type: 'WORKSHOP',
+    title: 'Talk to Your Life',
+    subtitle: 'Voice Journaling, Life Logs & Instant Recall',
+    type: 'BUILD SESSION',
     color: 'cyan',
     location: 'Denver Tech Center',
     time: '6:30 PM – 9:00 PM',
-    spots: 25,
-    tags: ['Calendar', 'Family', 'Productivity'],
-    desc: 'Manage your calendar by chat, build a weekly meal plan in Notion, get a morning brief with weather and your schedule, and set up reminders for the whole family. One member saves an hour a week just on meal planning. Beginners welcome.',
+    spots: 20,
+    tags: ['Voice', 'Memory', 'Journal'],
+    desc: 'Ramble at your agent from the car, on a walk, after a meeting. It transcribes, tags, and files everything into a searchable life log. Ask "what was I stressed about in March?" and get a real answer. Bring a phone and headphones.',
     featured: false,
+    prompt: `You are my voice journal. I'll send you audio or transcripts throughout the day — no structure, no prompts from you, just me talking.
+
+1. TRANSCRIBE verbatim. Keep filler words if they reveal mood.
+
+2. TAG each entry: date, time, location if mentioned, people, topics, emotional tone.
+
+3. NEVER reply in the moment unless I ask a direct question. This is a journal, not a chat.
+
+4. WEEKLY, deliver: themes that repeated, people I talked about most, decisions I made out loud, things I said I'd do but haven't mentioned since.
+
+5. ON DEMAND, answer: "what did I say about X", "how was I feeling in [month]", "when did I first mention [person]". Quote directly with date/time.
+
+No summarizing into "you felt..." Use my words.`,
   },
 ]
 
